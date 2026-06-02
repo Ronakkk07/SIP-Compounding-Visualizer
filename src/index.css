@@ -1,0 +1,120 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Light mode tokens ─────────────────────────────────────────── */
+:root {
+  --bg:            #f4f7ff;
+  --surface:       #ffffff;
+  --surface-2:     #f0f4fb;
+  --border:        #dde4f0;
+  --border-2:      #edf1f9;
+  --text-1:        #0b1120;
+  --text-2:        #5a6a85;
+  --text-3:        #9aaabb;
+
+  --accent:        #4f46e5;
+  --accent-dim:    rgba(79,70,229,0.1);
+  --green:         #0d9e6e;
+  --green-dim:     rgba(13,158,110,0.12);
+  --gold:          #c07000;
+  --gold-dim:      rgba(192,112,0,0.12);
+  --rose:          #dc2626;
+  --rose-dim:      rgba(220,38,38,0.1);
+
+  /* Recharts */
+  --ch-grid:       #edf1f9;
+  --ch-axis:       #9aaabb;
+  --ch-corpus:     #4f46e5;
+  --ch-invested:   #9aaabb;
+  --ch-returns:    #c07000;
+  --ch-base:       #c7d2e8;
+
+  /* Tooltip */
+  --tt-bg:         #ffffff;
+  --tt-border:     #dde4f0;
+  --tt-shadow:     rgba(15,23,42,0.10);
+}
+
+/* ── Dark mode tokens ──────────────────────────────────────────── */
+.dark {
+  --bg:            #000000;
+  --surface:       #0e0e0e;
+  --surface-2:     #181818;
+  --border:        #262626;
+  --border-2:      #1c1c1c;
+  --text-1:        #f0f0f0;
+  --text-2:        #7a7a7a;
+  --text-3:        #464646;
+
+  --accent:        #818cf8;
+  --accent-dim:    rgba(129,140,248,0.14);
+  --green:         #2dd4aa;
+  --green-dim:     rgba(45,212,170,0.13);
+  --gold:          #f5ba40;
+  --gold-dim:      rgba(245,186,64,0.13);
+  --rose:          #fb7185;
+  --rose-dim:      rgba(251,113,133,0.12);
+
+  --ch-grid:       #1c1c1c;
+  --ch-axis:       #555555;
+  --ch-corpus:     #818cf8;
+  --ch-invested:   #4a4a68;
+  --ch-returns:    #f5ba40;
+  --ch-base:       #2a2a3a;
+
+  --tt-bg:         #111111;
+  --tt-border:     #2a2a2a;
+  --tt-shadow:     rgba(0,0,0,0.8);
+}
+
+/* ── Base ──────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text-1);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+/* ── Scrollbar ─────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-3); }
+
+/* ── Range slider ──────────────────────────────────────────────── */
+input[type=range] {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 4px;
+  border-radius: 99px;
+  background: var(--border);
+  outline: none;
+}
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--accent);
+  cursor: pointer;
+  border: 2px solid var(--surface);
+  box-shadow: 0 0 0 3px var(--accent-dim);
+  transition: box-shadow 0.15s;
+}
+input[type=range]::-webkit-slider-thumb:hover {
+  box-shadow: 0 0 0 5px var(--accent-dim);
+}
+
+/* ── Number inputs ─────────────────────────────────────────────── */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; }
+
+/* ── Recharts override ─────────────────────────────────────────── */
+.recharts-cartesian-grid line { stroke: var(--ch-grid); }
+.recharts-tooltip-wrapper { outline: none; }
