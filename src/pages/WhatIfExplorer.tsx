@@ -38,12 +38,6 @@ function buildSipPhases(
   return base?.map((p) => (p.id >= fromId ? { ...p, monthlyAmount: amount } : p));
 }
 
-function buildStepUpPhases(
-  base: SimOptions['phases'], pct: number
-): SimOptions['phases'] {
-  return base?.map((p) => p.id < 6 ? p : { ...p, monthlyAmount: Math.round(p.monthlyAmount * (1 + pct / 100)) });
-}
-
 // ─── Suggestions ─────────────────────────────────────────────────────────────
 
 interface Suggestion {
@@ -62,8 +56,8 @@ const SUGGESTIONS: Suggestion[] = [
   { label: 'Post-job SIP ₹25K',     group: 'SIP',   build: (p) => ({ phases: buildSipPhases(p, 25000, 6) }) },
   { label: 'Post-job SIP ₹30K',     group: 'SIP',   build: (p) => ({ phases: buildSipPhases(p, 30000, 6) }) },
   { label: 'Post-job SIP ₹15K',     group: 'SIP',   build: (p) => ({ phases: buildSipPhases(p, 15000, 6) }) },
-  { label: '10% annual step-up',    group: 'SIP',   build: (p) => ({ phases: buildStepUpPhases(p, 10) }) },
-  { label: '15% annual step-up',    group: 'SIP',   build: (p) => ({ phases: buildStepUpPhases(p, 15) }) },
+  { label: '10% annual step-up',    group: 'SIP',   build: () => ({ stepUpPercent: 10 }) },
+  { label: '15% annual step-up',    group: 'SIP',   build: () => ({ stepUpPercent: 15 }) },
   { label: 'XIRR 10% (bear)',       group: 'XIRR',  build: () => ({ projectedXIRR: 0.10 }) },
   { label: 'XIRR 14% (bull)',       group: 'XIRR',  build: () => ({ projectedXIRR: 0.14 }) },
   { label: 'XIRR 8% (worst case)',  group: 'XIRR',  build: () => ({ projectedXIRR: 0.08 }) },
@@ -109,7 +103,7 @@ function buildCustomOpts(p: CustomP, phases: SimOptions['phases']): Partial<SimO
       return { pauseStart: s, pauseEnd: e };
     }
     case 'start_earlier': return { shiftStartYears: p.yearsEarlier };
-    case 'step_up': return { phases: buildStepUpPhases(phases, p.stepUpPct) };
+    case 'step_up': return { stepUpPercent: p.stepUpPct };
   }
 }
 

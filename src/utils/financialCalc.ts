@@ -29,6 +29,7 @@ export interface SimOptions {
   referenceInvested?: number;
   historicalXIRR?: number;
   xirrSchedule?: { startDate: Date; endDate: Date | null; rate: number }[];
+  stepUpPercent?: number;
 }
 
 function addMonths(d: Date, n: number): Date {
@@ -89,6 +90,7 @@ export function simulate(opts: SimOptions = {}): MonthlyPoint[] {
     referenceInvested = REFERENCE.totalInvested,
     historicalXIRR = REFERENCE.xirr,
     xirrSchedule,
+    stepUpPercent = 0,
   } = opts;
 
   const sortedPhases = [...phases].sort((a, b) => a.startDate.getTime() - b.startDate.getTime());
@@ -112,7 +114,10 @@ export function simulate(opts: SimOptions = {}): MonthlyPoint[] {
 
     const paused = pauseStart && pauseEnd && cur >= pauseStart && cur <= pauseEnd;
     const phase = getPhase(cur, phases);
-    const contribution = paused ? 0 : (phase?.monthlyAmount ?? 0);
+    const baseAmount = phase?.monthlyAmount ?? 0;
+    const yearsSinceSIPStart = Math.max(0, cur.getFullYear() - baseStart.getFullYear());
+    const stepFactor = stepUpPercent > 0 ? Math.pow(1 + stepUpPercent / 100, yearsSinceSIPStart) : 1;
+    const contribution = paused ? 0 : Math.round(baseAmount * stepFactor);
 
     if (!isProjection && sameMonth(cur, refDate)) {
       corpus = referenceCorpus;
